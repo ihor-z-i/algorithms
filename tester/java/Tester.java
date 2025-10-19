@@ -1,7 +1,3 @@
-package tester.java;
-
-import utility.ClassCaller;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -11,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import utility.ClassCaller;
 
 /** A class to compare an assignment's solution output to the expected output of a test case. */
 public class Tester {

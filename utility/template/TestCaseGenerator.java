@@ -1,9 +1,5 @@
 // Be sure to put the appropriate package name
 
-package utility.template;
-
-import utility.AbstractTestCaseGenerator;
-import utility.ClassCaller;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
