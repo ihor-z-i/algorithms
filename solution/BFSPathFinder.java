@@ -16,9 +16,10 @@ public class BFSPathFinder {
             for (Edge edge : graph.getNeighbourEdges(currentVertex)) {
                 int neighbor = edge.destination;
                 int newDistance = currentDistance + edge.weight;
-                // Usually BFS would mark nodes as visited and check if they were visited.
+                // Usually in BFS for graphs without weights 
+                // we would mark nodes as visited and check if they were visited.
                 // That won't work for weighted graphs
-                // because a shorter path may be found later.
+                // because a shortest path may be not the direct neighbor.
                 // so neighbor is considered when one of the following is true:
                 // a) it hasn't been reached yet (shortestPaths doesn't contain neighbor)
                 // b) a shorter path is found
