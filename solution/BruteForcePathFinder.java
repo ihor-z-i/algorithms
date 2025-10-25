@@ -20,12 +20,9 @@ public class BruteForcePathFinder implements PathFinder {
         }
 
         public Path tryExtend(int vertex, int weight) {
-            // going through the vertex again in the same path
-            // might still produce a better path
-            // if road around has less weight than direct edge
-            // so we allow revisiting vertices
-            // but going through the same edge again will always produce a cycle
-            if (hasWentThroughEdge(currentVertex, vertex)) {
+            // going through the vertex again in the same path produces a cycle
+            // we don't allow cycles
+            if (hasWentThroughVertex(vertex)) {
                 return null;
             }
             return new Path(this, vertex, weight);
@@ -35,11 +32,10 @@ public class BruteForcePathFinder implements PathFinder {
             return this.currentVertex;
         }
 
-        public boolean hasWentThroughEdge(int from, int to) {
-            // Walk up the chain to check if edge exists - derive edge from vertices!
+        public boolean hasWentThroughVertex(int vertex) {
             Path current = this;
-            while (current != null && current.parent != null) {
-                if (current.parent.currentVertex == from && current.currentVertex == to) {
+            while (current != null) {
+                if (current.currentVertex == vertex) {
                     return true;
                 }
                 current = current.parent;
@@ -63,7 +59,7 @@ public class BruteForcePathFinder implements PathFinder {
 
                 var newPath = currentPath.tryExtend(neighbor, edge.weight);
                 if (newPath == null) {
-                    // Edge has already been traversed in this path; skip to avoid cycles
+                    // A vertex has been traversed in this path; skip to avoid cycles
                     continue;
                 }
                 int newDistance = newPath.totalWeight;
@@ -71,13 +67,11 @@ public class BruteForcePathFinder implements PathFinder {
                         || newDistance < shortestPaths.get(neighbor)) {
                     shortestPaths.put(neighbor, newDistance);
 
-                    // keeping it inside discards paths that are obviously worse
-                    // if this is moved out of the condition
-                    // it uses lots of memory and never ends
+                    // keeping it inside if discards paths that are obviously worse
                     queue.add(newPath);
                 }
 
-                // complete brute force would be achieved by
+                // complete brute force is achieved by
                 // exploring all possible paths without pruning
                 // queue.add(newPath);
             }
