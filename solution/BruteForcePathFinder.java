@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class BruteForcePathFinder implements PathFinder {
 
-private static class Path {
+    private static class Path {
         private final Path parent;
         private final int currentVertex;
         private final int totalWeight;
@@ -20,6 +20,11 @@ private static class Path {
         }
 
         public Path tryExtend(int vertex, int weight) {
+            // going through the vertex again in the same path
+            // might still produce a better path
+            // if road around has less weight than direct edge
+            // so we allow revisiting vertices
+            // but going through the same edge again will always produce a cycle
             if (hasWentThroughEdge(currentVertex, vertex)) {
                 return null;
             }
@@ -42,7 +47,7 @@ private static class Path {
             return false;
         }
     }
-    
+
     public HashMap<Integer, Integer> computeShortestPaths(WeightedGraph graph, int startVertex) {
         HashMap<Integer, Integer> shortestPaths = new HashMap<>();
         java.util.Queue<Path> queue = new java.util.LinkedList<>();
@@ -65,9 +70,16 @@ private static class Path {
                 if (!shortestPaths.containsKey(neighbor)
                         || newDistance < shortestPaths.get(neighbor)) {
                     shortestPaths.put(neighbor, newDistance);
+
+                    // keeping it inside discards paths that are obviously worse
+                    // if this is moved out of the condition
+                    // it uses lots of memory and never ends
+                    queue.add(newPath);
                 }
 
-                queue.add(newPath);
+                // complete brute force would be achieved by
+                // exploring all possible paths without pruning
+                // queue.add(newPath);
             }
         }
 
