@@ -1,9 +1,9 @@
 import java.util.HashMap;
 import java.util.List;
 
-public class BFSPathFinder {
+public class BFSPathFinder implements PathFinder {
 
-    HashMap<Integer, Integer> computeShortestPaths(WeightedGraph graph, int startVertex) {
+    public HashMap<Integer, Integer> computeShortestPaths(WeightedGraph graph, int startVertex) {
         HashMap<Integer, Integer> shortestPaths = new HashMap<>();
         java.util.Queue<Integer> queue = new java.util.LinkedList<>();
         queue.add(startVertex);
